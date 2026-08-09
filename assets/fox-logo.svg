@@ -1,0 +1,23 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="eyeGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFC98A" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#E8965A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Fox head, minimal line art -->
+  <path d="M32 8 L18 4 L21 18 C14 22 10 30 10 38 C10 49 20 58 32 58 C44 58 54 49 54 38 C54 30 50 22 43 18 L46 4 Z"
+        fill="none" stroke="#C9B8F0" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- ears inner -->
+  <path d="M20 10 L22.5 17 L27 15.5 Z" fill="#3E2A5C" stroke="#C9B8F0" stroke-width="1.2" stroke-linejoin="round"/>
+  <path d="M44 10 L41.5 17 L37 15.5 Z" fill="#3E2A5C" stroke="#C9B8F0" stroke-width="1.2" stroke-linejoin="round"/>
+  <!-- snout -->
+  <path d="M25 40 C25 46 28 50 32 52 C36 50 39 46 39 40 C39 36 36 34 32 34 C28 34 25 36 25 40 Z"
+        fill="none" stroke="#C9B8F0" stroke-width="1.6" stroke-linejoin="round"/>
+  <circle cx="32" cy="42" r="1.8" fill="#C9B8F0"/>
+  <!-- eyes: glowing amber, the signature -->
+  <circle class="fox-eye" cx="24" cy="30" r="5" fill="url(#eyeGlow)"/>
+  <circle class="fox-eye" cx="40" cy="30" r="5" fill="url(#eyeGlow)"/>
+  <circle cx="24" cy="30" r="2" fill="#2A1F47"/>
+  <circle cx="40" cy="30" r="2" fill="#2A1F47"/>
+</svg>

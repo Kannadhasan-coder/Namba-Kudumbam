@@ -1,0 +1,39 @@
+/* ============================================================
+   FIREBASE CONFIG — fill this in with YOUR project's keys.
+   Firebase Console → Project Settings → General → Your apps → SDK setup
+   See README.md, Step 1, for exact instructions.
+   ============================================================ */
+
+const firebaseConfig = {
+  apiKey: "PASTE_YOUR_API_KEY",
+  authDomain: "PASTE_YOUR_PROJECT.firebaseapp.com",
+  projectId: "PASTE_YOUR_PROJECT_ID",
+  storageBucket: "PASTE_YOUR_PROJECT.appspot.com",
+  messagingSenderId: "PASTE_YOUR_SENDER_ID",
+  appId: "PASTE_YOUR_APP_ID"
+};
+
+/* Soft "gate" codes — these only decide who SEES the login forms.
+   Real account security is handled by Firebase Authentication
+   (see README, Step 3) using each member's own password. */
+const GATE_CODES = {
+  adminCode: "220977",
+  adminPassword: "Kdhasan@2211",
+  familyCode: "2026",
+  familyPassword: "Namba Family",
+  spectatePassword: "guest@2026"
+};
+
+/* Email domain used to turn each member's name into a Firebase Auth
+   email under the hood — members never see or type this. */
+const AUTH_EMAIL_DOMAIN = "naarikootam.family";
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const auth = firebase.auth();
+const storage = firebase.storage();
+
+/* Secondary app instance so that creating a new member account
+   (Admin → Add Member) never signs the admin out of their own session. */
+const secondaryApp = firebase.initializeApp(firebaseConfig, "Secondary");
+const secondaryAuth = secondaryApp.auth();
