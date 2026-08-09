@@ -5,12 +5,13 @@
    ============================================================ */
 
 const firebaseConfig = {
-  apiKey: "PASTE_YOUR_API_KEY",
-  authDomain: "PASTE_YOUR_PROJECT.firebaseapp.com",
-  projectId: "PASTE_YOUR_PROJECT_ID",
-  storageBucket: "PASTE_YOUR_PROJECT.appspot.com",
-  messagingSenderId: "PASTE_YOUR_SENDER_ID",
-  appId: "PASTE_YOUR_APP_ID"
+  apiKey: "AIzaSyBxmEytkZfb8VI_WNth071pVxj1WHQbU70",
+  authDomain: "nk-chat-db.firebaseapp.com",
+  projectId: "nk-chat-db",
+  storageBucket: "nk-chat-db.firebasestorage.app",
+  messagingSenderId: "523484163524",
+  appId: "1:523484163524:web:f97803500ac146bb0bc891",
+  measurementId: "G-K4VX9HPG09"
 };
 
 /* Soft "gate" codes — these only decide who SEES the login forms.
