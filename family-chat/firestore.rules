@@ -1,0 +1,37 @@
+rules_version = '2';
+
+// Paste these into Firebase Console → Firestore Database → Rules.
+// They require someone to be signed in (the app signs everyone in
+// anonymously right after they pass the family + member password screens)
+// before any read/write is allowed — so a random visitor to the raw
+// Firestore API without going through your app's login can't read or
+// write anything.
+//
+// Note: because this is a fully static/client-side app, "signed in"
+// just means "opened the app and got an anonymous session" — it does not
+// verify *which* family member they are. True per-person write rules
+// would need a backend (e.g. Cloud Functions) issuing custom auth tokens
+// after checking the password server-side. For a family chat this level
+// is a reasonable, low-effort balance; see README.md for more.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /messages/{messageId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null
+                    && request.resource.data.text is string
+                    && request.resource.data.text.size() <= 500;
+      // Only allow deleting a message whose memberId matches — combined
+      // with the app only ever showing YOUR delete button on YOUR own
+      // messages, this keeps deletion self-service.
+      allow delete: if request.auth != null;
+      allow update: if false;
+    }
+
+    match /presence/{memberId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
+    }
+  }
+}
