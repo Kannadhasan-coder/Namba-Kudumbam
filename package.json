@@ -1,0 +1,12 @@
+{
+  "name": "namba-family-chat",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Namba Family — private family chat with a family gate, avatar login per member, realtime chat (Firebase), and an admin dashboard.",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
