@@ -1,0 +1,78 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function admin() {
+      return signedIn() && request.auth.token.admin == true;
+    }
+
+    function memberOf(conversationId) {
+      return signedIn()
+        && request.auth.uid in get(/databases/$(database)/documents/conversations/$(conversationId)).data.memberIds;
+    }
+
+    match /users/{uid} {
+      allow read: if signedIn();
+      allow create: if admin() || (signedIn() && request.auth.uid == uid);
+      allow update: if admin() || (
+        signedIn() && request.auth.uid == uid
+        && request.resource.data.name == resource.data.name
+        && request.resource.data.role == resource.data.role
+        && request.resource.data.photo == resource.data.photo
+      );
+      allow delete: if admin();
+    }
+
+    match /presence/{uid} {
+      allow read: if signedIn();
+      allow create, update: if signedIn() && request.auth.uid == uid;
+      allow delete: if admin() || (signedIn() && request.auth.uid == uid);
+    }
+
+    match /conversations/{conversationId} {
+      allow read: if admin() || memberOf(conversationId);
+      allow create: if signedIn() && request.auth.uid in request.resource.data.memberIds;
+      allow update: if admin() || (
+        memberOf(conversationId)
+        && request.resource.data.memberIds == resource.data.memberIds
+      );
+      allow delete: if admin();
+
+      match /messages/{messageId} {
+        allow read: if admin() || memberOf(conversationId);
+
+        allow create: if admin() || (
+          memberOf(conversationId)
+          && request.resource.data.senderId == request.auth.uid
+          && request.resource.data.text is string
+          && request.resource.data.text.size() <= 1000
+          && request.resource.data.keys().hasOnly([
+            "senderId", "senderName", "text", "createdAt", "replyTo", "reactions"
+          ])
+        );
+
+        allow update: if admin() || (
+          memberOf(conversationId)
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(["reactions", "deleted"])
+          && (
+            request.resource.data.deleted == true
+            || request.resource.data.reactions is map
+          )
+        );
+
+        allow delete: if admin() || (
+          memberOf(conversationId) && resource.data.senderId == request.auth.uid
+        );
+      }
+    }
+
+    match /settings/{docId} {
+      allow read: if signedIn();
+      allow write: if admin();
+    }
+  }
+}
