@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naanga oru Naarikootam</title>
+<link rel="icon" href="assets/fox-logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Sora:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Ambient twilight background layers -->
+<div class="bg-glow bg-glow-a"></div>
+<div class="bg-glow bg-glow-b"></div>
+
+<!-- ============ TOAST ============ -->
+<div id="toast" class="toast"></div>
+
+<!-- ============ LANDING ============ -->
+<main id="view-landing" class="view">
+  <div class="landing-wrap">
+    <div class="brand-mark">
+      <img src="assets/fox-logo.svg" alt="" class="fox-icon breathing">
+      <div class="brand-text">
+        <h1>Naanga oru Naarikootam</h1>
+        <p class="brand-sub">a den for <span class="amber">Namba Family</span></p>
+      </div>
+    </div>
+
+    <div class="gate-row">
+      <button class="gate-card" id="btn-open-admin">
+        <span class="gate-eyebrow">01</span>
+        <span class="gate-title">Admin Login</span>
+        <span class="gate-desc">Manage the den, the pack, and the record.</span>
+      </button>
+      <button class="gate-card" id="btn-open-member">
+        <span class="gate-eyebrow">02</span>
+        <span class="gate-title">Member Login</span>
+        <span class="gate-desc">Step in and find your family waiting.</span>
+      </button>
+      <button class="gate-card gate-card-ghost" id="btn-open-spectate">
+        <span class="gate-eyebrow">03</span>
+        <span class="gate-title">Spectate</span>
+        <span class="gate-desc">Watch quietly, from just outside the den.</span>
+      </button>
+    </div>
+  </div>
+</main>
+
+<!-- ============ ADMIN LOGIN MODAL ============ -->
+<div id="modal-admin" class="modal-overlay hidden">
+  <div class="modal-card">
+    <button class="modal-close" data-close="modal-admin">&times;</button>
+    <img src="assets/fox-logo.svg" class="fox-icon fox-icon-sm" alt="">
+    <h2>Admin Login</h2>
+    <p class="modal-sub">The keeper of the den.</p>
+    <form id="form-admin-login">
+      <label>Admin code
+        <input type="text" id="admin-code" autocomplete="off" required>
+      </label>
+      <label>Password
+        <input type="password" id="admin-password" required>
+      </label>
+      <p class="field-error" id="admin-login-error"></p>
+      <button type="submit" class="btn-primary">Enter the Den</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ MEMBER LOGIN GATE MODAL ============ -->
+<div id="modal-member-gate" class="modal-overlay hidden">
+  <div class="modal-card">
+    <button class="modal-close" data-close="modal-member-gate">&times;</button>
+    <img src="assets/fox-logo.svg" class="fox-icon fox-icon-sm" alt="">
+    <h2>Member Login</h2>
+    <p class="modal-sub">Prove you belong to the pack.</p>
+    <form id="form-member-gate">
+      <label>Family code
+        <input type="text" id="family-code" autocomplete="off" required>
+      </label>
+      <label>Password
+        <input type="password" id="family-password" required>
+      </label>
+      <p class="field-error" id="member-gate-error"></p>
+      <button type="submit" class="btn-primary">Find My Family</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ SPECTATE LOGIN MODAL ============ -->
+<div id="modal-spectate" class="modal-overlay hidden">
+  <div class="modal-card">
+    <button class="modal-close" data-close="modal-spectate">&times;</button>
+    <img src="assets/fox-logo.svg" class="fox-icon fox-icon-sm" alt="">
+    <h2>Spectate Mode</h2>
+    <p class="modal-sub">Read-only. No messages, no trace.</p>
+    <form id="form-spectate-login">
+      <label>Guest password
+        <input type="password" id="spectate-password" required>
+      </label>
+      <p class="field-error" id="spectate-login-error"></p>
+      <button type="submit" class="btn-primary">Peek Inside</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ MEMBER PICKER ============ -->
+<main id="view-member-picker" class="view hidden">
+  <div class="picker-wrap">
+    <img src="assets/fox-logo.svg" class="fox-icon fox-icon-sm" alt="">
+    <h2>Who's coming in?</h2>
+    <p class="modal-sub">Pick your name, then your password.</p>
+    <div id="member-picker-grid" class="picker-grid"></div>
+    <button class="btn-ghost" id="btn-back-landing-1">&larr; Back</button>
+  </div>
+</main>
+
+<!-- individual member password inline modal -->
+<div id="modal-member-password" class="modal-overlay hidden">
+  <div class="modal-card">
+    <button class="modal-close" data-close="modal-member-password">&times;</button>
+    <div class="avatar-lg" id="mp-avatar"></div>
+    <h2 id="mp-name">Name</h2>
+    <p class="modal-sub" id="mp-role">Role</p>
+    <form id="form-member-password">
+      <label>Your password
+        <input type="password" id="member-password" required>
+      </label>
+      <p class="field-error" id="member-password-error"></p>
+      <button type="submit" class="btn-primary">Log In</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ ADMIN DASHBOARD ============ -->
+<main id="view-admin-dashboard" class="view hidden">
+  <header class="topbar">
+    <div class="topbar-brand">
+      <img src="assets/fox-logo.svg" class="fox-icon fox-icon-xs" alt="">
+      <span>Admin Dashboard</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn-outline" id="btn-goto-chat-as-admin">Open Chat</button>
+      <button class="btn-outline btn-danger-outline" id="btn-admin-logout">Logout</button>
+    </div>
+  </header>
+
+  <div class="dash-grid">
+    <section class="panel panel-danger">
+      <h3>Delete All Chats</h3>
+      <p class="panel-desc">Wipes every message in Group Chat for everyone. This cannot be undone.</p>
+      <button class="btn-danger" id="btn-delete-all-chats">Delete All Group Chat Messages</button>
+      <p class="panel-hint" id="delete-chats-status"></p>
+    </section>
+
+    <section class="panel panel-wide">
+      <div class="panel-head-row">
+        <h3>Member Detail</h3>
+        <button class="btn-primary btn-sm" id="btn-open-add-member">+ Add Member</button>
+      </div>
+      <div class="table-wrap">
+        <table class="member-table" id="member-table">
+          <thead>
+            <tr>
+              <th>Name</th><th>Role</th><th>Messages</th><th>Storage Used</th><th>Active Time</th><th>Status</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="member-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- Add / Edit member modal -->
+<div id="modal-member-form" class="modal-overlay hidden">
+  <div class="modal-card">
+    <button class="modal-close" data-close="modal-member-form">&times;</button>
+    <h2 id="member-form-title">Add Member</h2>
+    <form id="form-member-editor">
+      <input type="hidden" id="mf-uid">
+      <label>Name
+        <input type="text" id="mf-name" required>
+      </label>
+      <label>Role
+        <input type="text" id="mf-role" placeholder="e.g. Naina" required>
+      </label>
+      <div id="mf-password-row">
+        <label>Password
+          <input type="password" id="mf-password">
+        </label>
+      </div>
+      <p class="field-hint hidden" id="mf-password-hint">
+        Passwords can only be changed by the member themselves (Chat → "Change Password"). Remove and re-add this member if they've lost access entirely.
+      </p>
+      <label>Profile color
+        <input type="color" id="mf-color" value="#8b6fd1">
+      </label>
+      <label>Profile photo (optional)
+        <input type="file" id="mf-photo" accept="image/*">
+      </label>
+      <div id="mf-photo-preview-row" class="hidden" style="display:flex;align-items:center;gap:10px;">
+        <div class="avatar" id="mf-photo-preview" style="width:44px;height:44px;"></div>
+        <label class="checkbox-row" id="mf-remove-photo-row" style="flex-direction:row;">
+          <input type="checkbox" id="mf-remove-photo">
+          <span>Remove current photo</span>
+        </label>
+      </div>
+      <label class="checkbox-row" id="mf-admin-row">
+        <input type="checkbox" id="mf-is-admin">
+        <span>Grant admin access</span>
+      </label>
+      <p class="field-error" id="member-form-error"></p>
+      <button type="submit" class="btn-primary" id="member-form-submit">Add to the Pack</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ CHANGE PASSWORD (self-service) ============ -->
+<div id="modal-change-password" class="modal-overlay hidden">
+  <div class="modal-card">
+    <button class="modal-close" data-close="modal-change-password">&times;</button>
+    <h2>Change Password</h2>
+    <p class="modal-sub">Only you can change your own password.</p>
+    <form id="form-change-password">
+      <label>Current password
+        <input type="password" id="cp-current" required autocomplete="off">
+      </label>
+      <label>New password
+        <input type="password" id="cp-new" required autocomplete="off">
+      </label>
+      <label>Confirm new password
+        <input type="password" id="cp-confirm" required autocomplete="off">
+      </label>
+      <p class="field-error" id="change-password-error"></p>
+      <button type="submit" class="btn-primary">Update Password</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ CHAT APP ============ -->
+<main id="view-chat" class="view hidden">
+  <div class="chat-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <img src="assets/fox-logo.svg" class="fox-icon fox-icon-xs" alt="">
+        <div>
+          <strong>Namba Family</strong>
+          <span id="sidebar-session-label" class="session-label"></span>
+        </div>
+      </div>
+
+      <nav class="sidebar-tabs">
+        <button class="sidebar-tab active" data-tab="members">
+          <span class="tab-icon">👪</span> Members
+        </button>
+        <button class="sidebar-tab" data-tab="group">
+          <span class="tab-icon">💬</span> Group Chat
+        </button>
+        <button class="sidebar-tab" data-tab="announcements">
+          <span class="tab-icon">📣</span> Announcements
+        </button>
+      </nav>
+
+      <div class="sidebar-panel" id="panel-members">
+        <div id="members-list" class="members-list"></div>
+      </div>
+
+      <button class="btn-outline hidden" id="btn-chat-to-admin" style="margin:0 12px 8px;">Admin Dashboard</button>
+      <button class="btn-outline" id="btn-change-password" style="margin:0 12px 8px;">🔑 Change Password</button>
+      <button class="btn-outline btn-logout-side" id="btn-chat-logout">Logout</button>
+    </aside>
+
+    <section class="chat-main">
+      <!-- Group chat -->
+      <div id="room-group" class="room active">
+        <header class="room-header">
+          <div>
+            <h2>Group Chat</h2>
+            <p class="room-sub">Text and emoji only, the whole pack in one room.</p>
+          </div>
+        </header>
+        <div class="messages" id="messages-group"></div>
+        <div class="reply-preview hidden" id="reply-preview-group">
+          <div class="reply-preview-body">
+            <span class="reply-preview-label">Replying to <strong id="reply-preview-name-group"></strong></span>
+            <span id="reply-preview-text-group"></span>
+          </div>
+          <button id="reply-cancel-group">&times;</button>
+        </div>
+        <form class="composer" id="form-group-composer">
+          <button type="button" class="emoji-btn" id="btn-emoji-group">🙂</button>
+          <input type="text" id="input-group" placeholder="Say something to the family..." autocomplete="off">
+          <button type="submit" class="btn-send">Send</button>
+        </form>
+        <div class="emoji-picker hidden" id="emoji-picker-group"></div>
+      </div>
+
+      <!-- Announcements -->
+      <div id="room-announcements" class="room">
+        <header class="room-header">
+          <div>
+            <h2>Announcements</h2>
+            <p class="room-sub">Only the admin speaks here.</p>
+          </div>
+          <button class="btn-danger btn-sm hidden" id="btn-delete-all-announcements">Delete All</button>
+        </header>
+        <div class="messages" id="messages-announcements"></div>
+        <form class="composer hidden" id="form-announcement-composer">
+          <button type="button" class="emoji-btn" id="btn-emoji-ann">🙂</button>
+          <label class="icon-btn" title="Attach photo (auto-compressed)">
+            📷
+            <input type="file" id="input-ann-image" accept="image/*" hidden>
+          </label>
+          <button type="button" class="icon-btn" id="btn-ann-voice" title="Record voice message (max 30s)">🎙️</button>
+          <input type="text" id="input-announcement" placeholder="Announce something to the family..." autocomplete="off">
+          <button type="submit" class="btn-send">Send</button>
+        </form>
+        <p class="room-locked hidden" id="announcements-locked-note">Only the admin can post here.</p>
+        <div class="emoji-picker hidden" id="emoji-picker-ann"></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- Firebase SDKs (compat, no build step needed) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-functions-compat.js"></script>
+
+<script src="js/firebase-config.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
