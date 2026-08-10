@@ -13,6 +13,7 @@
    password. See README.md Step 5.
    ============================================================ */
 
+import { Analytics } from "@vercel/analytics/next"
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp();
