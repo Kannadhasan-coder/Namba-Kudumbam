@@ -82,7 +82,7 @@ input{ font-family: var(--font-body); }
   margin-bottom: 48px;
   animation: rise 0.8s ease both;
 }
-.fox-icon{ width: 64px; height: 64px; filter: drop-shadow(0 0 18px rgba(232,150,90,0.35)); }
+.fox-icon{ width: 200px; height: 150px; filter: drop-shadow(0 0 18px rgba(232,150,90,0.35)); }
 .fox-icon-sm{ width: 44px; height: 44px; margin-bottom: 6px; }
 .fox-icon-xs{ width: 26px; height: 26px; }
 .breathing .fox-eye,
