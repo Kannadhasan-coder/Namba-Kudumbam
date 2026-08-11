@@ -1,14 +1,10 @@
-rules_version = '2';
-
 service firebase.storage {
   match /b/{bucket}/o {
-    // Only signed-in family members / admin / guest can view attachments.
-    // Uploads are gated to admin in the app UI (Announcements is admin-only);
-    // the Firestore rule for messages_announcements is the real backstop.
-    match /announcements/{allPaths=**} {
-      allow read: if request.auth != null;
+    match /avatars/{fileName} {
+      allow read: if true;
       allow write: if request.auth != null
-                   && request.resource.size < 15 * 1024 * 1024; // 15MB cap per file
+                    && request.resource.size < 5 * 1024 * 1024
+                    && request.resource.contentType.matches('image/.*');
     }
   }
 }
