@@ -69,3 +69,35 @@ service cloud.firestore {
     }
   }
 }
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    match /settings/{docId} {
+      allow read: if signedIn();
+      allow write: if signedIn();
+    }
+
+    match /members/{memberId} {
+      allow read: if signedIn();
+      allow write: if signedIn();
+    }
+
+    match /groupMessages/{msgId} {
+      allow read: if signedIn();
+      allow create: if signedIn();
+      allow delete: if signedIn();
+      allow update: if false;
+    }
+
+    match /announcements/{msgId} {
+      allow read: if signedIn();
+      allow create: if signedIn();
+      allow delete: if signedIn();
+      allow update: if false;
+    }
+  }
+}
