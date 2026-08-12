@@ -22,7 +22,7 @@ const firebaseConfig = {
 const GATE_CODES = {
   adminCode: "220977",
   familyCode: "2026",
-  familyPassword: "IT",
+  familyPassword: "Namba Family",
   spectatePassword: "guest@2026"
 };
 
