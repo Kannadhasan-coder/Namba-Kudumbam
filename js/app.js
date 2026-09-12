@@ -1,8 +1,3 @@
-/* ============================================================
-   Naanga oru Naarikootam — Namba Family
-   Client application logic (vanilla JS, no build step)
-   ============================================================ */
-
 /* ---------------- Global state ---------------- */
 const state = {
   currentUser: null,      // {uid, name, role, color, isAdmin, blocked, isSpectator}
